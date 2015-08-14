@@ -1,4 +1,5 @@
 var Cylon = require('cylon');
+var utils = require('./utils/droneUtils.js');
 var bot;
 
 // Initialise the robot
@@ -21,49 +22,56 @@ Cylon.robot()
 function fly(robot) {
     bot = robot;
     bot.drone.config('general:navdata_demo', 'TRUE');
-    bot.nav.on("navdata", function(data){
+    bot.nav.on("navdata", function (data) {
         console.log(data);
     });
+    bot.drone.getPngStream().on("data", untils.sendFrame);
+    utils.instructionListener.on('move', moveDrone);
     bot.drone.disableEmergency();
     bot.drone.ftrim();
     bot.drone.takeoff();
-    bot.nav.on("altitudeChange", function(data){
-         console.log("Altitude:", data);
-        if (data > 1.5 ){
+    bot.nav.on("altitudeChange", function (data) {
+        console.log("Altitude:", data);
+        if (data > 1.5) {
             bot.drone.land();
         }
     });
-    after(10*1000,function(){
-        bot.drone.forward(0.1);
-        bot.drone.left(0.1);
+
+
+    after(10 * 1000, function () {
+        bot.drone.forward(0.05);
     });
-    after(12*1000, function(){
-        bot.drone.left(0);
-        bot.drone.forward(0);
-        bot.drone.hover(2);
-    });
-    after (14*1000, function(){
-        bot.drone.back(0.1);
-        bot.drone.right(0.1);
-    });
-    after(16*1000, function(){
-        bot.drone.back(0);
-        bot.drone.right(0);
-        bot.drone.hover(2);
-    });
-    after(18*1000, function(){
-        bot.drone.frontFlip(2);
-    })
-    after(20*1000, function(){
-        bot.drone.hover(2);
-    })
-    after(22*1000, function(){
+    after(40 * 1000, function () {
         bot.drone.land();
     });
-    after(27*1000, function(){
-        bot.drone.stop();
+    after(45 * 1000, function () {
+        bot.drone.stop()
     });
 
+    function moveDrone(move) {
+        console.log("received", move);
+        if (move.left) {
+            console.log("Moving left");
+            bot.drone.left(0.2);
+            bot.drone.forward(0.05);
+            after(0.5 * 1000, function () {
+                bot.drone.left(0);
+                bot.drone.forward(0.05);
+            });
+        }
+
+        if (move.right) {
+            console.log("Moving right");
+            bot.drone.right(0.2);
+            bot.drone.forward(0.05);
+            after(0.5 * 1000, function () {
+                bot.drone.right(0);
+                bot.drone.forward(0.05);
+            });
+
+
+        }
+    }
 }
 
 Cylon.start();
