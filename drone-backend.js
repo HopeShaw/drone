@@ -52,9 +52,17 @@ function fly(robot) {
         console.log("received", move);
         if (move.left) {
             console.log("Moving left");
-            bot.drone.left(0.2);
-            bot.drone.forward(0.05);
-            after(0.5 * 1000, function () {
+            after(0.5*1000, function(){
+                bot.drone.hover();
+            });
+            after(2.5*1000, function(){
+                bot.drone.left(0.2);
+                bot.drone.forward(0.05);
+            });
+            after(3*1000, function(){
+                bot.drone.hover();
+            });
+            after(4 * 1000, function () {
                 bot.drone.left(0);
                 bot.drone.forward(0.05);
             });
@@ -62,9 +70,17 @@ function fly(robot) {
 
         if (move.right) {
             console.log("Moving right");
-            bot.drone.right(0.2);
-            bot.drone.forward(0.05);
-            after(0.5 * 1000, function () {
+            after(0.5*1000, function(){
+                bot.drone.hover();
+            });
+            after(2.5*1000, function(){
+                bot.drone.right(0.2);
+                bot.drone.forward(0.05);
+            });
+            after(3*1000, function(){
+                bot.drone.hover();
+            });
+            after(4 * 1000, function () {
                 bot.drone.right(0);
                 bot.drone.forward(0.05);
             });
