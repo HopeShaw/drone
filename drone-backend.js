@@ -27,9 +27,9 @@ function fly(robot) {
     bot.drone.disableEmergency();
     bot.drone.ftrim();
     bot.drone.takeoff();
-    bot.nav.on("altitudeChange", function(){
+    bot.nav.on("altitudeChange", function(data){
          console.log("Altitude:", data);
-        if (altitude > 1.5 ){
+        if (data > 1.5 ){
             bot.drone.land();
         }
     });
@@ -38,13 +38,29 @@ function fly(robot) {
         bot.drone.left(0.1);
     });
     after(12*1000, function(){
+        bot.drone.left(0);
+        bot.drone.forward(0);
+        bot.drone.hover(2);
+    });
+    after (14*1000, function(){
         bot.drone.back(0.1);
         bot.drone.right(0.1);
     });
-    after(14*1000, function(){
+    after(16*1000, function(){
+        bot.drone.back(0);
+        bot.drone.right(0);
+        bot.drone.hover(2);
+    });
+    after(18*1000, function(){
+        bot.drone.frontFlip(2);
+    })
+    after(20*1000, function(){
+        bot.drone.hover(2);
+    })
+    after(22*1000, function(){
         bot.drone.land();
     });
-    after(19*1000, function(){
+    after(27*1000, function(){
         bot.drone.stop();
     });
 
