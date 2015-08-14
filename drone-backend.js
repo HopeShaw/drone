@@ -15,6 +15,24 @@ Cylon.robot()
     
 // Fly the bot
 function fly(robot) {
+    robot = bot;
+    bot.drone.disableEmergency();
+    bot.drone.ftrim();
+    bot.drone.takeoff();
+    after(10*1000,function(){
+        bot.drone.forward(0.1);
+        bot.drone.left(0.1);
+    });
+    after(20*1000, function(){
+        bot.drone.back(0.1);
+        bot.drone.right(0.1);
+    });
+    after(25*1000, function(){
+        bot.drone.land();
+    });
+    after(30*1000, function(){
+        bot.drone.stop();
+    });
 
 }
 
